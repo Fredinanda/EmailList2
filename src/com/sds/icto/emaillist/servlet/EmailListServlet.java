@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.sds.icto.emaillist.action.ActionFactory;
 import com.sds.icto.emaillist.action.formAction;
 import com.sds.icto.emaillist.action.indexAction;
 import com.sds.icto.emaillist.action.insertAction;
@@ -45,34 +46,21 @@ public class EmailListServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try{
-			request.setCharacterEncoding("utf-8");
-			String action = request.getParameter("a");
+		try{	
+			request.setCharacterEncoding( "utf-8" );
 			
-			if( "form".equals( action )){
-				Action act = new formAction();
-				act.execute(request, response);
-							
-			} else if("insert".equals(action)) {
-				Action act = new insertAction();
-				act.execute(request, response);
-					
-			} 
-					
-			else {
-				Action act = new indexAction();
-				act.execute(request, response);
-			}
+			String a = request.getParameter( "a" );
+
+			ActionFactory af = ActionFactory.getInstance();	
+			Action action = af.getAction( a );
 			
+			action.execute(request, response);	
+
 			
-			
-			
-			
-		
-		
-		} catch (Exception e){
-			e.printStackTrace();
+		} catch ( Exception ex ) {
+			ex.printStackTrace();
 		}
+		
 	}
 
 }
